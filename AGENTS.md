@@ -45,7 +45,7 @@ This app follows the [Astryx Next.js + Tailwind example](https://github.com/face
 <!-- ASTRYX:START -->
 
 Astryx v0.1.2 · 148 components
-CLI: run every command as `pnpm exec astryx <cmd>` (shown below as `astryx ...`).
+CLI: run every command as `vp run astryx -- <cmd>` (shown below as `astryx ...`).
 
 SETUP (once, in your app entry e.g. main.tsx) — without these, components render unstyled:
 import "@astryxdesign/core/reset.css";
@@ -59,8 +59,8 @@ WORKFLOW — discover, don't guess. Before writing UI:
 
 RULES:
 
-- No <div> — components do all layout/spacing. Full page → AppShell; sidebar nav → SideNav.
-- Custom styling: component props first; else style/className with tokens — var(--color-_|--spacing-_|--radius-\*). No raw hex/px. (No StyleX/Tailwind compiler here — don't use xstyle/utility classes.)
+- Prefer Astryx layout components (`VStack`, `HStack`, `Card`, `AppShell`) for structure; page chrome may use `main`/`div` with Tailwind.
+- Custom styling: component props first; else `className` with token-backed Tailwind (`bg-surface`, `text-primary`, …) or CSS vars (`var(--color-*)`, `var(--spacing-*)`, `var(--radius-*)`). No raw hex/px.
 - Tokens for every value (`astryx docs tokens`). Brand/accent via `astryx theme` — never override --color-\* in :root.
 
 MORE CLI:
@@ -72,3 +72,11 @@ swizzle <Name> eject component source (--gap reports why)
 upgrade --apply run after any @astryxdesign/core bump
 
 <!-- ASTRYX:END -->
+
+# Cursor
+
+Project Cursor config lives under `.cursor/`:
+
+- Rules: mission (`vibework`), toolchain (`viteplus`), UI stack (`ui-stack` when editing `src/`)
+- Skill: `figma-to-prototype` for Figma MCP → Astryx → pages
+- MCP: Figma at `.cursor/mcp.json` (also install `/add-plugin figma` per machine)
