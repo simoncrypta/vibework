@@ -42,6 +42,9 @@ dist-ssr
 # Coverage
 coverage
 
+# Storybook
+storybook-static
+
 # Temporary files
 *.tmp
 *.temp

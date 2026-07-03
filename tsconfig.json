@@ -34,6 +34,6 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "types", "worker-configuration.d.ts"],
+  "include": ["src", "types", ".storybook", "worker-configuration.d.ts"],
   "exclude": ["node_modules", ".tmp"]
 }

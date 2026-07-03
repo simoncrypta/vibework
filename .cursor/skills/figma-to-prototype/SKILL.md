@@ -48,7 +48,7 @@ Map Figma pieces to the closest Astryx components. Use Tailwind on wrappers and 
 
 Patterns to copy:
 
-- Server page + client form: `src/app/pages/home.tsx` + `home-form.tsx`
+- Server page + client form: `src/app/pages/home.tsx` + `src/app/components/home-form.tsx`
 - Layout: `VStack` / `HStack` / `Card` + Tailwind on `main` / max-width wrappers
 
 ### 4. Wire the route
