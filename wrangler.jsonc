@@ -22,6 +22,17 @@
     "enabled": true,
   },
 
+  // Enables https://<worker-name>.<account-subdomain>.workers.dev
+  "workers_dev": true,
+
+  // Optional: attach a custom domain (zone must be on your Cloudflare account)
+  // "routes": [
+  //   {
+  //     "pattern": "your-app.example.com",
+  //     "custom_domain": true,
+  //   },
+  // ],
+
   // Environment variables
   "vars": {
     // Add your environment variables here
