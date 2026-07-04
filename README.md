@@ -1,10 +1,19 @@
-# Vibework + Astryx Design
+# Vibework
 
-A starter for going from **Figma design → real prototype** fast, with a full **Astryx design system catalog in Storybook**.
+A **design-system agnostic** starter for going from **Figma design → real prototype** fast.
 
-Drop in a design, describe what you want, and iterate with an AI coding agent. Vibework is intentionally opinionated so you spend time on the product, not on wiring up tooling. The bundled Storybook mirrors [Astryx](https://astryx.atmeta.com/components) — Foundations, Components, and Patterns — themed with this project's `neutralTheme`.
+Drop in a design, describe what you want, and iterate with an AI coding agent. Vibework is intentionally opinionated about the stack (RedwoodSDK, Vite+, edge deploy) so you spend time on the product, not on wiring up tooling. Bring your own UI library — Tailwind is included for layout.
 
 This repo is a **[GitHub public template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)**. On GitHub, **Use this template** → **Create a new repository** copies everything here into a **new repo** of yours (not a fork). Clone that new repo to work locally.
+
+## Design-system variants
+
+| Template                                                                | What you get                                      |
+| ----------------------------------------------------------------------- | ------------------------------------------------- |
+| **vibework** (this repo)                                                | Core stack + Tailwind — bring your own components |
+| **[vibework-astryx](https://github.com/simoncrypta/vibework.X.Astryx)** | Astryx design system + full Storybook catalog     |
+
+Future: variant repos will sync generic files listed in [`CORE_MANIFEST.json`](./CORE_MANIFEST.json) from tagged vibework releases.
 
 ---
 
@@ -32,7 +41,7 @@ irm https://vite.plus/ps1 | iex
 
 ## Quick start
 
-1. On GitHub: **Use this template** → **Create a new repository** (GitHub copies this project into your new repo).
+1. On GitHub: **Use this template** → **Create a new repository**.
 2. Locally:
 
 ```bash
@@ -43,7 +52,7 @@ vp install
 # Run the app (RedwoodSDK on Cloudflare Workers)
 vp dev
 
-# Run the design system catalog (separate terminal)
+# Browse component stories (separate terminal)
 vp run storybook
 ```
 
@@ -52,7 +61,7 @@ vp run storybook
 | App       | Vite dev server (see terminal output) |
 | Storybook | http://localhost:6006                 |
 
-When you're ready to deploy the app:
+When you're ready to deploy:
 
 ```bash
 vp run release
@@ -65,11 +74,10 @@ If setup or packages look wrong, run `vp env doctor` and share the output.
 ## What it's for
 
 - Turning Figma (or any design) into a clickable, deployable prototype quickly
-- Browsing and validating Astryx components, tokens, and page patterns in Storybook
 - Experimenting with UI and flows without fighting config
 - Pairing with an AI agent that already knows the stack (see [`AGENTS.md`](./AGENTS.md))
 
-It is **not** a production app framework with every feature pre-built. It is a clean runway: React, Astryx design system, edge deploy, one CLI, and a Storybook catalog.
+It is **not** a production app framework with every feature pre-built. It is a clean runway: React, Tailwind layout, edge deploy, one CLI, and Storybook + Vitest for app components.
 
 ---
 
@@ -79,73 +87,19 @@ Everything is documented for agents in [`AGENTS.md`](./AGENTS.md). In short:
 
 ### Vite+ (`vp`)
 
-[Vite+](https://viteplus.dev/guide/) is the unified toolchain. One global CLI (`vp`) covers install, dev, build, format, lint, typecheck, and tests.
-
-| Command         | What it does                                      |
-| --------------- | ------------------------------------------------- |
-| `vp install`    | Install dependencies                              |
-| `vp dev`        | Start the app dev server                          |
-| `vp build`      | Production build                                  |
-| `vp check`      | Format, lint, and typecheck                       |
-| `vp test`       | Run tests                                         |
-| `vp env doctor` | Diagnose setup / runtime / package-manager issues |
+Unified toolchain — `vp install`, `vp dev`, `vp build`, `vp check`, `vp test`. See [viteplus.dev](https://viteplus.dev/guide/).
 
 ### RedwoodSDK
 
-[RedwoodSDK](https://docs.rwsdk.com/) — React Server Components on [Cloudflare Workers](https://developers.cloudflare.com/workers).
+React Server Components on Cloudflare Workers. Pages in `src/app/pages/`, worker in `src/worker.tsx`. [docs.rwsdk.com](https://docs.rwsdk.com/)
 
-| Path             | Role               |
-| ---------------- | ------------------ |
-| `src/worker.tsx` | Worker entry       |
-| `src/client.tsx` | Client hydration   |
-| `src/app/`       | Pages and document |
+### Tailwind
 
-Deploy with `vp run release` (builds with Vite+ and deploys via Wrangler).
+Layout and page chrome via utility classes. Add your design system in `src/app/providers.tsx` when ready.
 
-### Astryx + Tailwind
+### Storybook + Vitest
 
-UI comes from [Astryx](https://github.com/facebook/astryx) with Tailwind for layout and overrides — adapted for RedwoodSDK RSC.
-
-- Docs: [astryx.atmeta.com](https://astryx.atmeta.com/components) · [GitHub](https://github.com/facebook/astryx)
-- Global styles: `src/app/styles.css`
-- Theme provider: `src/app/providers.tsx` (`neutralTheme` from `@astryxdesign/theme-neutral`)
-- Pages stay Server Components; interactive bits live in small `"use client"` islands
-
-**Styling habit:** Astryx components for UI; Tailwind utilities for layout and `className` overrides. Prefer token-backed classes (`bg-surface`, `text-primary`, `rounded-lg`, …) over raw hex/px.
-
-Discover components instead of guessing:
-
-```bash
-vp run astryx -- build "<idea>"      # kit: page + blocks + components
-vp run astryx -- component <Name>    # props + examples
-vp run astryx -- search "<query>"    # find anything in the system
-```
-
-### Storybook
-
-[Storybook](https://storybook.js.org/docs) documents the full Astryx catalog for this project. It does **not** ship to the app — only for local design-system browsing and agent reference.
-
-| Command                          | What it does                                             |
-| -------------------------------- | -------------------------------------------------------- |
-| `vp run storybook`               | Dev server at http://localhost:6006                      |
-| `vp run storybook-build`         | Static build → `storybook-static/`                       |
-| `vp run generate:astryx-stories` | Regenerate component/pattern stories from the Astryx CLI |
-
-**Sidebar**
-
-```
-Astryx
-├── Introduction
-├── Foundations     # color, typography, spacing, shape, …
-├── Components      # 148 Astryx components (showcase + variants)
-└── Patterns        # page templates (dashboard, login, tables, …)
-Vibework
-└── Components      # app-specific prototype stories
-```
-
-Stories live under `src/storybook/astryx/`. Generated files import official Astryx block and page templates from `@astryxdesign/cli`. After upgrading `@astryxdesign/core` or `@astryxdesign/cli`, run `vp run generate:astryx-stories` and commit the diff.
-
-Storybook config: [`.storybook/`](./.storybook/) (isolated Vite config, Astryx theme via `Providers` + `styles.css`).
+Hand-authored component stories under `src/app/components/` with browser play tests via `vp test`. Storybook MCP at `http://localhost:6006/mcp` when `vp run storybook` is running.
 
 ---
 
@@ -153,67 +107,41 @@ Storybook config: [`.storybook/`](./.storybook/) (isolated Vite config, Astryx t
 
 ```
 src/
-  worker.tsx              # Cloudflare Worker entry
+  worker.tsx              # Routes + middleware
   client.tsx              # Client hydration
   app/
-    pages/                # Routes / screens — start here
-    components/           # App UI + Vibework Storybook stories
-    document.tsx          # HTML document shell
-    providers.tsx         # Theme (Astryx)
-    styles.css            # Astryx + Tailwind + tokens
-  storybook/astryx/       # Design system catalog (Storybook only)
-    foundations/          # Hand-authored token & layout docs
-    generated/            # Generated component + pattern stories
-    shared/               # BlockStory, TokenGrid, DocsPage helpers
-scripts/
-  generate-astryx-stories.mjs
-.storybook/               # Storybook config
+    document.tsx          # HTML shell (RSC stylesheet link)
+    providers.tsx         # Optional DS theme wrapper
+    styles.css            # Tailwind entry
+    pages/                # Server Component screens
+    components/           # Client islands + shared UI
+.storybook/               # Storybook (browse)
+.storybook-vitest/        # Vitest-only Storybook config
+.cursor/                  # Agent rules, skills, hooks, MCP
+CORE_MANIFEST.json        # Generic files (for future variant sync)
 ```
-
-Agents should read [`AGENTS.md`](./AGENTS.md) for conventions, review checklist, and Astryx workflow details.
 
 ---
 
-## Cursor agent setup
+## AI agent setup
 
-This repo is tuned for [Cursor](https://cursor.com) Agent mode (Figma → code).
+Agents should read [`AGENTS.md`](./AGENTS.md) for conventions and the review checklist.
 
-| Piece           | Path                                                                         | Role                                                           |
-| --------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| Always-on rules | [`.cursor/rules/`](./.cursor/rules/)                                         | Mission, Vite+, and (when editing UI) RSC + Astryx conventions |
-| Project skill   | [`.cursor/skills/figma-to-prototype/`](./.cursor/skills/figma-to-prototype/) | Step-by-step Figma MCP → Astryx → pages                        |
-| Figma MCP       | [`.cursor/mcp.json`](./.cursor/mcp.json)                                     | Design context tools in this workspace                         |
-| Agent notes     | [`AGENTS.md`](./AGENTS.md)                                                   | Full stack reference for agents                                |
+| Resource        | Path                                                                         | Purpose                        |
+| --------------- | ---------------------------------------------------------------------------- | ------------------------------ |
+| Always-on rules | [`.cursor/rules/`](./.cursor/rules/)                                         | Mission, Vite+, UI conventions |
+| Project skill   | [`.cursor/skills/figma-to-prototype/`](./.cursor/skills/figma-to-prototype/) | Figma MCP → pages workflow     |
+| Figma MCP       | `.cursor/mcp.json` + `/add-plugin figma`                                     | Design context from Figma URLs |
 
-**One-time on each machine:** install the Figma Cursor plugin:
-
-```
-/add-plugin figma
-```
-
-Then open Agent chat, paste a Figma URL, and ask to implement the screen. Use Storybook to validate component choices against the Astryx catalog.
+Open Agent chat, paste a Figma URL, and ask to implement the screen.
 
 ---
 
-## Use this template
+## Adding a design system
 
-This repository is a **GitHub template repository**. **Use this template** does not fork this repo — GitHub creates a **new repository** with a full copy of the files and history you need to start fresh.
+1. Install your UI library (`pnpm add …`)
+2. Wire `ThemeProvider` (or equivalent) in `src/app/providers.tsx`
+3. Replace demo components in `src/app/components/` with DS primitives
+4. Update `.cursor/rules/ui-stack.mdc` for agent conventions
 
-1. On GitHub: **Use this template** → **Create a new repository** (pick name, visibility, etc.).
-2. Clone **your** new repository (not this template repo):
-
-   ```bash
-   git clone <your-new-repo-url>
-   cd <your-project>
-   vp install
-   vp dev
-   vp run storybook   # optional: browse the Astryx catalog
-   ```
-
-3. Rename the project in `package.json` if you like.
-4. Build from Figma in `src/app/pages/`.
-5. Deploy with `vp run release` when you're ready to share.
-
-**Alternatives:** fork this repo, or clone it and repoint `git remote` — but **Use this template** is the intended path for new prototypes.
-
-Happy vibing.
+Or start from **[vibework-astryx](https://github.com/simoncrypta/vibework.X.Astryx)** if Astryx fits your project.

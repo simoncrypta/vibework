@@ -1,37 +1,30 @@
 ---
-description: RedwoodSDK RSC + Astryx + Tailwind conventions for UI work
-globs: src/**/*.{tsx,ts,css}
+description: RedwoodSDK RSC + Tailwind conventions for UI work
+globs: src/**/*
 alwaysApply: false
 ---
 
-# UI stack (RSC + Astryx + Tailwind)
+# UI stack (RSC + Tailwind)
 
-## Architecture
+## Structure
 
-- Pages in `src/app/pages/` are **Server Components** by default
-- Interactive Astryx forms / state live in small `"use client"` files under `src/app/components/` (see `home-form.tsx`)
-- Reusable UI lives in `src/app/components/` with colocated `*.stories.tsx` (`tags: ["autodocs", "test"]`, `play` on every story — see `component-stories` rule)
-- Theme: `src/app/providers.tsx` (`neutralTheme`)
-- Styles: `src/app/styles.css` (Astryx + Tailwind + token bridge), linked from `Document` via `?url`
-- Worker entry: `src/worker.tsx` · client: `src/client.tsx`
-- Deploy: `vp run release`
+- Pages: Server Components in `src/app/pages/`
+- Interactive forms / state: small `"use client"` files under `src/app/components/` (see `hello-form.tsx`)
+- Document shell: `src/app/document.tsx` — stylesheet via `?url` for RSC HTML
+- Optional providers: `src/app/providers.tsx` — add your design-system theme here
+- Styles: `src/app/styles.css` (Tailwind), linked from `Document` via `?url`
 
-## Styling (this repo overrides generic Astryx “no Tailwind” notes)
+## Styling
 
-- **Astryx** for UI components (`Button`, `Card`, `VStack`, `Text`, …)
-- **Tailwind** for layout wrappers and `className` overrides
-- Prefer token-backed utilities: `bg-surface`, `bg-body`, `text-primary`, `text-secondary`, `rounded-lg`, …
-- Escape hatch: `bg-[var(--color-background-surface)]` when a token is not bridged
-- Prefer Astryx layout (`VStack`, `HStack`, `Card`) for structure; `div`/`main` wrappers with Tailwind are fine for page chrome
+- **Tailwind** for layout, spacing, and page chrome
+- Add a design system via `providers.tsx` and component imports when ready
+- Prefer utility classes over raw hex/px for prototypes
 
-## Discover, don’t guess
+## Patterns
 
-Before inventing UI, run:
+- Server page + client form: `src/app/pages/home.tsx` + `src/app/components/hello-form.tsx`
+- Presentational + interactive card: `src/app/components/info-card.tsx`
 
-```bash
-vp run astryx -- build "<idea>"
-vp run astryx -- component <Name>
-vp run astryx -- search "<query>"
-```
+## Routes
 
-Import components from `@astryxdesign/core/<Name>` (match existing pages).
+Register new pages in `src/worker.tsx` with `route()` like the home page.

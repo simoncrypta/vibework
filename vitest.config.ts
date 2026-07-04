@@ -7,7 +7,7 @@ import { defineConfig } from "vite-plus";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/** Storybook interaction tests for hand-authored Vibework components only. */
+/** Storybook interaction tests for hand-authored Vibework components. */
 export default defineConfig({
   test: {
     projects: [

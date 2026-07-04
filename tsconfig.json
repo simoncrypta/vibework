@@ -12,9 +12,7 @@
       "./types/vite.d.ts"
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@astryx/blocks/*": ["./node_modules/@astryxdesign/cli/templates/blocks/*"],
-      "@astryx/pages/*": ["./node_modules/@astryxdesign/cli/templates/pages/*"]
+      "@/*": ["./src/*"]
     },
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,

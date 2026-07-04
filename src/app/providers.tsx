@@ -1,8 +1,6 @@
 "use client";
 
-import { Theme } from "@astryxdesign/core/theme";
-import { neutralTheme } from "@astryxdesign/theme-neutral/built";
-
+/** Pass-through wrapper for client boundaries. Add your design-system provider here. */
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <Theme theme={neutralTheme}>{children}</Theme>;
+  return <>{children}</>;
 }

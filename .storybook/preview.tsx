@@ -12,13 +12,10 @@ for (const href of [stylesUrl, docsStylesUrl]) {
   document.head.appendChild(link);
 }
 
-// Match the app Document: theme on <html>, body uses the dark page token.
-document.documentElement.setAttribute("data-astryx-theme", "neutral");
-document.documentElement.classList.add("bg-body");
-document.body.classList.add("min-h-screen", "bg-body", "text-primary");
+document.documentElement.classList.add("bg-slate-50");
+document.body.classList.add("min-h-screen", "bg-slate-50", "text-slate-900");
 
 const preview: Preview = {
-  // Generate Docs pages for every story (override per-file with tags: []).
   tags: ["autodocs"],
   parameters: {
     controls: {
@@ -29,7 +26,6 @@ const preview: Preview = {
     },
     docs: {
       toc: true,
-      // Docs chrome defaults to light; use Storybook's dark theme for the page.
       theme: themes.dark,
     },
     layout: "fullscreen",

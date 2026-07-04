@@ -1,14 +1,14 @@
 ---
 name: figma-to-prototype
 description: >-
-  Turns Figma designs into Vibework prototypes using Figma MCP, Astryx, and
-  RedwoodSDK RSC. Use when the user pastes a Figma URL, asks to implement a
-  frame/screen, build from design, match a mockup, or go from Figma to code.
+  Turns Figma designs into Vibework prototypes using Figma MCP and RedwoodSDK
+  RSC. Use when the user pastes a Figma URL, asks to implement a frame/screen,
+  build from design, match a mockup, or go from Figma to code.
 ---
 
 # Figma → Vibework prototype
 
-Ship a clickable screen in this repo’s stack. Prefer speed and Astryx components over pixel-perfect custom CSS.
+Ship a clickable screen in this repo's stack. Prefer speed and your project's UI components over pixel-perfect custom CSS.
 
 ## Prerequisites
 
@@ -27,33 +27,29 @@ From the Figma URL or selection:
 
 Do not implement from memory when a URL or node is available.
 
-### 2. Map to Astryx
+### 2. Map to UI components
 
-```bash
-vp run astryx -- build "<one-line description of the screen>"
-vp run astryx -- search "<key control or pattern>"
-vp run astryx -- component <Name>
-```
+Map Figma pieces to components from your design system (or plain HTML + Tailwind in this core template). Use Tailwind on wrappers for spacing and layout.
 
-Map Figma pieces to the closest Astryx components. Use Tailwind on wrappers and `className` for spacing/layout the design system does not cover.
+If using a Vibework variant (e.g. vibework-astryx), follow that variant's component discovery workflow.
 
 ### 3. Implement in the app
 
-| Concern                                    | Where                                                                 |
-| ------------------------------------------ | --------------------------------------------------------------------- |
-| Page / route shell                         | Server Component in `src/app/pages/`                                  |
-| Controlled inputs, toggles, local UI state | `"use client"` island colocated with the page                         |
-| Theme                                      | Already in `src/app/providers.tsx` — do not re-wrap unless needed     |
-| Styles                                     | Token utilities in `className`; avoid new global CSS unless necessary |
+| Concern                                    | Where                                                       |
+| ------------------------------------------ | ----------------------------------------------------------- |
+| Page / route shell                         | Server Component in `src/app/pages/`                        |
+| Controlled inputs, toggles, local UI state | `"use client"` island under `src/app/components/`           |
+| Theme / DS provider                        | `src/app/providers.tsx`                                     |
+| Styles                                     | Tailwind `className`; avoid new global CSS unless necessary |
 
 Patterns to copy:
 
-- Server page + client form: `src/app/pages/home.tsx` + `src/app/components/home-form.tsx`
-- Layout: `VStack` / `HStack` / `Card` + Tailwind on `main` / max-width wrappers
+- Server page + client form: `src/app/pages/home.tsx` + `src/app/components/hello-form.tsx`
+- Client card: `src/app/components/info-card.tsx`
 
 ### 4. Wire the route
 
-If this is a new screen, register it the same way existing pages are registered in `src/worker.tsx` / the app router. Keep URLs simple for prototypes.
+If this is a new screen, register it in `src/worker.tsx` with `route()`. Keep URLs simple for prototypes.
 
 ### 5. Verify
 
@@ -63,13 +59,12 @@ If this is a new screen, register it the same way existing pages are registered 
 ## Rules of thumb
 
 - One screen at a time unless the user asks for a full flow
-- Approximate spacing and type with tokens (`text-primary`, `bg-surface`, gaps on `VStack`) rather than hard-coded px/hex
+- Use Tailwind spacing and typography utilities rather than hard-coded px/hex
 - Skip auth, data layers, and tests unless the user asks
 - Assets: use Figma MCP asset guidance; prefer remote URLs the MCP provides over checking in binaries
 
 ## Anti-patterns
 
-- Rebuilding buttons/inputs from scratch when Astryx has them
 - Marking the whole page `"use client"` for one form field
 - Ignoring Figma MCP and freehanding the layout
 - Adding new dependencies for a one-off prototype effect

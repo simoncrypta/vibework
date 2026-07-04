@@ -6,7 +6,7 @@ import { mergeConfig } from "vite-plus";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/** Vitest-only Storybook config: hand-authored Vibework stories, not the Astryx catalog. */
+/** Vitest-only Storybook config: hand-authored Vibework component stories. */
 const config: StorybookConfig = {
   stories: ["../src/app/components/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: ["@storybook/addon-docs", "@storybook/addon-a11y", "@storybook/addon-vitest"],

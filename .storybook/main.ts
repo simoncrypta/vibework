@@ -7,11 +7,7 @@ import { mergeConfig } from "vite-plus";
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
-  stories: [
-    "../src/storybook/**/*.mdx",
-    "../src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-  ],
+  stories: ["../src/app/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
     "@storybook/addon-docs",
     "@storybook/addon-a11y",
@@ -22,7 +18,6 @@ const config: StorybookConfig = {
     name: "@storybook/react-vite",
     options: {
       builder: {
-        // Avoid loading the app vite config (Cloudflare / RedwoodSDK plugins).
         viteConfigPath: ".storybook/vite.config.ts",
       },
     },
@@ -30,7 +25,6 @@ const config: StorybookConfig = {
   features: {
     /**
      * Required for rendering async Server Components in Storybook.
-     * Wraps stories in a Suspense boundary:
      * https://docs.rwsdk.com/guides/frontend/storybook
      */
     experimentalRSC: true,
@@ -40,14 +34,6 @@ const config: StorybookConfig = {
       resolve: {
         alias: {
           "@": path.resolve(dirname, "../src"),
-          "@astryx/blocks": path.resolve(
-            dirname,
-            "../node_modules/@astryxdesign/cli/templates/blocks",
-          ),
-          "@astryx/pages": path.resolve(
-            dirname,
-            "../node_modules/@astryxdesign/cli/templates/pages",
-          ),
         },
       },
     });
