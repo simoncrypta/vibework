@@ -8,10 +8,10 @@ This repo is a **[GitHub public template](https://docs.github.com/en/repositorie
 
 ## Design-system variants
 
-| Template                                                                | What you get                                      |
-| ----------------------------------------------------------------------- | ------------------------------------------------- |
-| **vibework** (this repo)                                                | Core stack + Tailwind — bring your own components |
-| **[vibework-astryx](https://github.com/simoncrypta/vibework.X.Astryx)** | Astryx design system + full Storybook catalog     |
+| Template                                                              | What you get                                      |
+| --------------------------------------------------------------------- | ------------------------------------------------- |
+| **vibework** (this repo)                                              | Core stack + Tailwind — bring your own components |
+| **[vibework-astryx](https://github.com/simoncrypta/vibework-astryx)** | Astryx design system + full Storybook catalog     |
 
 Future: variant repos will sync generic files listed in [`CORE_MANIFEST.json`](./CORE_MANIFEST.json) from tagged vibework releases.
 
@@ -144,4 +144,4 @@ Open Agent chat, paste a Figma URL, and ask to implement the screen.
 3. Replace demo components in `src/app/components/` with DS primitives
 4. Update `.cursor/rules/ui-stack.mdc` for agent conventions
 
-Or start from **[vibework-astryx](https://github.com/simoncrypta/vibework.X.Astryx)** if Astryx fits your project.
+Or start from **[vibework-astryx](https://github.com/simoncrypta/vibework-astryx)** if Astryx fits your project.

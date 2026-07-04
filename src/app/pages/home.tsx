@@ -14,7 +14,7 @@ export const Home = () => {
             RedwoodSDK RSC on Cloudflare Workers. Tailwind for layout — bring your own design system
             or pick a{" "}
             <a
-              href="https://github.com/simoncrypta/vibework.X.Astryx"
+              href="https://github.com/simoncrypta/vibework-astryx"
               className="font-medium text-blue-600 underline-offset-2 hover:underline"
             >
               pre-wired variant
