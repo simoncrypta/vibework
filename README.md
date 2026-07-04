@@ -13,6 +13,8 @@ This repo is a **[GitHub public template](https://docs.github.com/en/repositorie
 | **vibework** (this repo)                                              | Core stack + Tailwind — bring your own components |
 | **[vibework-astryx](https://github.com/simoncrypta/vibework-astryx)** | Astryx design system + full Storybook catalog     |
 
+<!-- MAINTAINER:START -->
+
 Variant repos sync generic files from tagged **[vibework](https://github.com/simoncrypta/vibework)** releases. See [Syncing variants](#syncing-variants) below.
 
 ---
@@ -33,6 +35,8 @@ vp run sync:variant -- ../vibework-astryx --ref v0.1.0
 ```
 
 Each variant declares DS-specific paths in `VARIANT_OWNED.json` — those files are never overwritten. After syncing, run `vp check && vp test` in the variant repo.
+
+<!-- MAINTAINER:END -->
 
 ---
 
@@ -137,10 +141,29 @@ src/
 .storybook/               # Storybook (browse)
 .storybook-vitest/        # Vitest-only Storybook config
 .cursor/                  # Agent rules, skills, hooks, MCP
+```
+
+<!-- MAINTAINER:START -->
+
+```
 CORE_MANIFEST.json        # Generic files synced to variants
 scripts/
   sync-to-variant.mjs     # Copy core files into variant repos
+  build-starter.mjs       # Publish stripped starter branch
 ```
+
+## Maintainer: starter branch
+
+Template users should **not** see sync tooling. Maintainers work on **`main`** (or `master`), then publish **`starter`**:
+
+```bash
+vp run build:starter              # force-push starter branch
+vp run build:starter -- --dry-run # preview only
+```
+
+On GitHub: set **`starter`** as the default branch so **Use this template** copies the stripped tree.
+
+<!-- MAINTAINER:END -->
 
 ---
 

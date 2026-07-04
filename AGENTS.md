@@ -35,7 +35,9 @@ Cursor rules, skills, MCP, and hooks live under `.cursor/` — loaded automatica
 - Package manager is **pnpm** — use `pnpm add`, not `npm` or `vpx storybook add`
 - First-time browser tests: `pnpm exec playwright install chromium`
 - Tooling issues: `vp env doctor`
+<!-- MAINTAINER:START -->
 - Generic files are listed in `CORE_MANIFEST.json` for variant sync via `vp run sync:variant`
+<!-- MAINTAINER:END -->
 
 <!--VITE PLUS START-->
 

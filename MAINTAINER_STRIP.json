@@ -1,0 +1,11 @@
+{
+  "description": "Removed from the starter template branch. Maintainers work on main; run vp run build:starter before releases.",
+  "remove": [
+    "MAINTAINER_STRIP.json",
+    "CORE_MANIFEST.json",
+    "scripts/sync-to-variant.mjs",
+    "scripts/build-starter.mjs"
+  ],
+  "stripMarkers": ["README.md", "AGENTS.md", ".cursor/rules/viteplus.mdc"],
+  "removePackageScripts": ["sync:variant", "build:starter"]
+}
