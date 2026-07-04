@@ -73,10 +73,88 @@ upgrade --apply run after any @astryxdesign/core bump
 
 <!-- ASTRYX:END -->
 
+# Storybook component tests (Vibework only)
+
+Hand-authored UI in `src/app/components/` is tested through **Storybook play functions + Vitest**. The generated Astryx design-system catalog (`src/storybook/astryx/generated/`, ~185 stories) is **not** part of this test suite — it is documentation only.
+
+## Commands
+
+```bash
+vp run storybook          # browse all stories (catalog + Vibework)
+vp test                   # Vitest browser tests — app components only
+vp check                  # format, lint, typecheck
+```
+
+First-time Vitest browser setup: `pnpm exec playwright install chromium`
+
+## Scope
+
+| What                                          | Storybook config            | Vitest                          |
+| --------------------------------------------- | --------------------------- | ------------------------------- |
+| `src/app/components/**/*.stories.tsx`         | `.storybook-vitest/main.ts` | **Yes** — stories tagged `test` |
+| `src/storybook/astryx/**` (generated catalog) | `.storybook/main.ts`        | **No**                          |
+
+Vitest uses `.storybook-vitest/` so the full catalog is never imported during `vp test`. Only stories with `tags: ["test"]` (in meta) run as tests.
+
+## Writing a component story
+
+Colocate `my-widget.stories.tsx` with `my-widget.tsx`. Follow existing files in `src/app/components/`.
+
+**Meta**
+
+- `title: "Vibework/Components/MyWidget"` (sidebar prefix avoids colliding with Astryx catalog)
+- `tags: ["autodocs", "test"]` — `test` opts the story into Vitest
+- `component: MyWidget`, sensible `parameters.layout`, decorators for width when needed
+
+**Play functions** — one per exported story. Prove behavior, not just mount:
+
+```tsx
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, fn, userEvent, within } from "storybook/test";
+
+import { MyWidget } from "./my-widget";
+
+const meta = {
+  title: "Vibework/Components/MyWidget",
+  component: MyWidget,
+  tags: ["autodocs", "test"],
+  args: { onAction: fn() },
+} satisfies Meta<typeof MyWidget>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("button", { name: "Save" })).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Save" }));
+    await expect(args.onAction).toHaveBeenCalledOnce();
+  },
+};
+```
+
+**Guidelines**
+
+- Presentational: assert key text or roles render (`getByRole`, `getByText`)
+- Interactive / client islands: use `userEvent` (type, click) and assert outcomes
+- Callback props: default `fn()` in meta `args`, assert with `toHaveBeenCalledOnce()` in `play`
+- Import `expect`, `within`, `userEvent`, `fn` from `storybook/test` — not `@testing-library/*` directly
+- Add a `play` on **every** story export (variants too), not only `Default`
+
+**Reference:** `feature-card.stories.tsx` (CTA + badges), `home-form.stories.tsx` (controlled inputs)
+
+## Config files (do not point Vitest at the full catalog)
+
+- `vitest.config.ts` — `@storybook/addon-vitest` + Playwright browser mode
+- `.storybook-vitest/main.ts` — stories glob: `src/app/components/**/*.stories.tsx` only
+- `.storybook/main.ts` — full Storybook (catalog + app stories) for local browsing
+
 # Cursor
 
 Project Cursor config lives under `.cursor/`:
 
-- Rules: mission (`vibework`), toolchain (`viteplus`), UI stack (`ui-stack` when editing `src/`)
+- Rules: mission (`vibework`), toolchain (`viteplus`), UI stack (`ui-stack` when editing `src/`), **component stories** (`component-stories` when editing `src/app/components/`)
 - Skill: `figma-to-prototype` for Figma MCP → Astryx → pages
 - MCP: Figma at `.cursor/mcp.json` (also install `/add-plugin figma` per machine)
+- Hooks: `.cursor/hooks.json` — after Write/StrReplace under `src/app/components/`, reminds the agent to add or fix colocated stories with `test` tags and `play` functions (see `hooks/check-component-story.mjs`)

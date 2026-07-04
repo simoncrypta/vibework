@@ -1,0 +1,23 @@
+---
+description: Storybook + Vitest requirements for src/app/components
+globs: src/app/components/**/*
+alwaysApply: false
+---
+
+# Component stories + tests
+
+Hand-authored components in `src/app/components/` **must** ship with colocated `*.stories.tsx` that Vitest runs via Storybook play functions.
+
+**Do not** add `test` tags or play tests to the generated Astryx catalog under `src/storybook/astryx/generated/` — that catalog is docs-only.
+
+## Checklist for every new or changed component
+
+1. Colocate `my-widget.stories.tsx` next to `my-widget.tsx`
+2. Meta: `title: "Vibework/Components/MyWidget"`, `tags: ["autodocs", "test"]`
+3. Every `export const …: Story` includes a `play` function
+4. Import test utils from `storybook/test` (`expect`, `within`, `userEvent`, `fn` as needed)
+5. Run `vp test` (scoped to app components) and `vp check`
+
+Full conventions and examples: **AGENTS.md → Storybook component tests**.
+
+Reference implementations: `feature-card.stories.tsx`, `home-form.stories.tsx`.
