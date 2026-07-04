@@ -120,10 +120,9 @@ function publishStarter(targetDir, dryRun) {
   const previousBranch = run("git", ["branch", "--show-current"]).trim();
   try {
     try {
-      run("git", ["rev-parse", "--verify", STARTER_BRANCH]);
       run("git", ["branch", "-D", STARTER_BRANCH]);
     } catch {
-      // branch does not exist locally
+      // branch does not exist locally yet
     }
 
     run("git", ["checkout", "--orphan", STARTER_BRANCH]);

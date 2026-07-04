@@ -12,6 +12,7 @@ This repo is a **[GitHub public template](https://docs.github.com/en/repositorie
 | --------------------------------------------------------------------- | ------------------------------------------------- |
 | **vibework** (this repo)                                              | Core stack + Tailwind — bring your own components |
 | **[vibework-astryx](https://github.com/simoncrypta/vibework-astryx)** | Astryx design system + full Storybook catalog     |
+| **[vibework-mui](https://github.com/simoncrypta/vibework-mui)**       | MUI design system + full Storybook catalog        |
 
 <!-- MAINTAINER:START -->
 
@@ -26,12 +27,15 @@ Generic stack files are listed in [`CORE_MANIFEST.json`](./CORE_MANIFEST.json). 
 ```bash
 # In vibework repo — preview changes
 vp run sync:variant -- ../vibework-astryx --dry-run
+vp run sync:variant -- ../vibework-mui --dry-run
 
 # Apply sync from current HEAD
 vp run sync:variant -- ../vibework-astryx
+vp run sync:variant -- ../vibework-mui
 
 # Apply sync from a tagged core release
 vp run sync:variant -- ../vibework-astryx --ref v0.1.0
+vp run sync:variant -- ../vibework-mui --ref v0.2.0
 ```
 
 Each variant declares DS-specific paths in `VARIANT_OWNED.json` — those files are never overwritten. After syncing, run `vp check && vp test` in the variant repo.

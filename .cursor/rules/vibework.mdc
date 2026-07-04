@@ -17,7 +17,7 @@ This is a **vibe prototype starter**: go from Figma (or a sketch) to a clickable
 
 ## Design-system variants
 
-Pre-wired templates live in sibling repos (e.g. **vibework-astryx**). This repo is the DS-agnostic core.
+Pre-wired templates live in sibling repos (e.g. **vibework-astryx**, **vibework-mui**). This repo is the DS-agnostic core.
 
 ## Figma → code
 
