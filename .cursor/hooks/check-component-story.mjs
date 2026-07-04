@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * postToolUse hook: after Write/StrReplace under src/app/components/, remind the
- * agent to colocate a Storybook story with Vitest play tests (see AGENTS.md).
+ * agent to colocate a Storybook story with Vitest play tests (see .cursor/rules/component-stories.mdc).
  */
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
@@ -63,7 +63,7 @@ function main() {
 
     if (!existsSync(storyPath)) {
       emit(
-        `Component file ${baseName} was edited. Create colocated ${path.basename(storyPath)} with Storybook + Vitest play tests. Requirements (AGENTS.md → Storybook component tests): title \`Vibework/Components/<Name>\`, tags \`["autodocs", "test"]\`, a \`play\` function on every exported story, imports from \`storybook/test\`. Run \`vp test\` when done.`,
+        `Component file ${baseName} was edited. Create colocated ${path.basename(storyPath)} with Storybook + Vitest play tests. Requirements (see .cursor/rules/component-stories.mdc): title \`Vibework/Components/<Name>\`, tags \`["autodocs", "test"]\`, a \`play\` function on every exported story, imports from \`storybook/test\`. Run \`vp test\` when done.`,
       );
       process.exit(0);
     }
@@ -79,7 +79,7 @@ function main() {
 
     if (issues.length > 0) {
       emit(
-        `Component ${baseName} has ${path.basename(storyPath)} but it is incomplete for Vitest: ${issues.join("; ")}. See AGENTS.md → Storybook component tests. Run \`vp test\` after fixing.`,
+        `Component ${baseName} has ${path.basename(storyPath)} but it is incomplete for Vitest: ${issues.join("; ")}. See .cursor/rules/component-stories.mdc. Run \`vp test\` after fixing.`,
       );
     }
 
@@ -98,7 +98,7 @@ function main() {
 
     if (issues.length > 0) {
       emit(
-        `Story file ${path.basename(filePath)} is missing Vitest coverage: ${issues.join("; ")}. Every Vibework component story needs the \`test\` tag and a \`play\` function per export. See AGENTS.md. Run \`vp test\`.`,
+        `Story file ${path.basename(filePath)} is missing Vitest coverage: ${issues.join("; ")}. Every Vibework component story needs the \`test\` tag and a \`play\` function per export. See .cursor/rules/component-stories.mdc. Run \`vp test\`.`,
       );
     }
   }

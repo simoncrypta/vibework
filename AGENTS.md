@@ -1,3 +1,42 @@
+# Vibework
+
+**Purpose:** Figma or sketch → clickable, deployable UI fast. Smallest change that makes the screen work — not production architecture.
+
+## Stack
+
+| Layer     | Choice                                                            |
+| --------- | ----------------------------------------------------------------- |
+| Toolchain | Vite+ — use **`vp`**, not raw `npm`/`vite`                        |
+| Runtime   | [RedwoodSDK](https://docs.rwsdk.com/) (RSC on Cloudflare Workers) |
+| UI        | Astryx components + Tailwind layout (token-backed utilities)      |
+| Verify    | `vp check` + `vp test` (Storybook play tests for app components)  |
+
+Deploy: `vp run release` · Worker: `src/worker.tsx` · Client: `src/client.tsx` · Pages: `src/app/pages/` · Client islands: `src/app/components/`
+
+## Workflow
+
+1. After pull: `vp install`
+2. Before finishing: `vp check` && `vp test`
+3. UI work: discover with `vp run astryx -- build "<idea>"` — do not invent a parallel design system
+4. Custom scripts: `vp run <script>` (see `package.json`)
+
+## Task-specific docs (read when relevant)
+
+| Doc                                          | When                                                   |
+| -------------------------------------------- | ------------------------------------------------------ |
+| `.cursor/rules/ui-stack.mdc`                 | Editing `src/**/*.{tsx,ts,css}`                        |
+| `.cursor/rules/component-stories.mdc`        | Editing `src/app/components/` (Storybook, Vitest, MCP) |
+| `.cursor/skills/figma-to-prototype/SKILL.md` | Figma URL or design input                              |
+
+Cursor rules, skills, MCP, and hooks live under `.cursor/` — loaded automatically.
+
+## Gotchas
+
+- Package manager is **pnpm** — use `pnpm add`, not `npm` or `vpx storybook add`
+- First-time browser tests: `pnpm exec playwright install chromium`
+- Generated Astryx catalog (`src/storybook/astryx/`) is docs-only
+- Tooling issues: `vp env doctor`
+
 <!--VITE PLUS START-->
 
 # Using Vite+, the Unified Toolchain for the Web
@@ -14,33 +53,6 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 - [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
 
 <!--VITE PLUS END-->
-
-# RedwoodSDK
-
-This app uses [RedwoodSDK](https://docs.rwsdk.com/) (React Server Components on Cloudflare Workers).
-
-- Worker entry: `src/worker.tsx`
-- Client hydration: `src/client.tsx`
-- Pages and document: `src/app/`
-- Deploy: `vp run release` (builds with Vite+, then `wrangler deploy`)
-
-RedwoodSDK docs: https://docs.rwsdk.com/
-Cloudflare Workers docs: https://developers.cloudflare.com/workers
-
-# Astryx + Tailwind (RSC)
-
-This app follows the [Astryx Next.js + Tailwind example](https://github.com/facebook/astryx/tree/main/apps/example-nextjs-tailwind), adapted for RedwoodSDK:
-
-- Global styles: `src/app/styles.css` (layered Astryx + Tailwind + token bridge)
-- Theme provider: `src/app/providers.tsx` (built `neutralTheme` for SSR)
-- Stylesheet is linked from `Document` via `?url` so CSS ships with RSC HTML ([rwsdk Tailwind guide](https://docs.rwsdk.com/guides/frontend/tailwind))
-- Pages stay Server Components; interactive Astryx forms live in small `"use client"` islands
-
-**Styling rules (overrides the generic Astryx agent note about no Tailwind):**
-
-- Astryx components for UI; Tailwind utilities for layout, wrappers, and `className` overrides
-- Prefer token-backed utilities from the bridge (`bg-surface`, `text-primary`, `rounded-lg`, …) over raw hex/px
-- Escape hatch: `bg-[var(--color-background-surface)]` when a token isn't bridged
 
 <!-- ASTRYX:START -->
 
@@ -72,89 +84,3 @@ swizzle <Name> eject component source (--gap reports why)
 upgrade --apply run after any @astryxdesign/core bump
 
 <!-- ASTRYX:END -->
-
-# Storybook component tests (Vibework only)
-
-Hand-authored UI in `src/app/components/` is tested through **Storybook play functions + Vitest**. The generated Astryx design-system catalog (`src/storybook/astryx/generated/`, ~185 stories) is **not** part of this test suite — it is documentation only.
-
-## Commands
-
-```bash
-vp run storybook          # browse all stories (catalog + Vibework)
-vp test                   # Vitest browser tests — app components only
-vp check                  # format, lint, typecheck
-```
-
-First-time Vitest browser setup: `pnpm exec playwright install chromium`
-
-## Scope
-
-| What                                          | Storybook config            | Vitest                          |
-| --------------------------------------------- | --------------------------- | ------------------------------- |
-| `src/app/components/**/*.stories.tsx`         | `.storybook-vitest/main.ts` | **Yes** — stories tagged `test` |
-| `src/storybook/astryx/**` (generated catalog) | `.storybook/main.ts`        | **No**                          |
-
-Vitest uses `.storybook-vitest/` so the full catalog is never imported during `vp test`. Only stories with `tags: ["test"]` (in meta) run as tests.
-
-## Writing a component story
-
-Colocate `my-widget.stories.tsx` with `my-widget.tsx`. Follow existing files in `src/app/components/`.
-
-**Meta**
-
-- `title: "Vibework/Components/MyWidget"` (sidebar prefix avoids colliding with Astryx catalog)
-- `tags: ["autodocs", "test"]` — `test` opts the story into Vitest
-- `component: MyWidget`, sensible `parameters.layout`, decorators for width when needed
-
-**Play functions** — one per exported story. Prove behavior, not just mount:
-
-```tsx
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, userEvent, within } from "storybook/test";
-
-import { MyWidget } from "./my-widget";
-
-const meta = {
-  title: "Vibework/Components/MyWidget",
-  component: MyWidget,
-  tags: ["autodocs", "test"],
-  args: { onAction: fn() },
-} satisfies Meta<typeof MyWidget>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByRole("button", { name: "Save" })).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Save" }));
-    await expect(args.onAction).toHaveBeenCalledOnce();
-  },
-};
-```
-
-**Guidelines**
-
-- Presentational: assert key text or roles render (`getByRole`, `getByText`)
-- Interactive / client islands: use `userEvent` (type, click) and assert outcomes
-- Callback props: default `fn()` in meta `args`, assert with `toHaveBeenCalledOnce()` in `play`
-- Import `expect`, `within`, `userEvent`, `fn` from `storybook/test` — not `@testing-library/*` directly
-- Add a `play` on **every** story export (variants too), not only `Default`
-
-**Reference:** `feature-card.stories.tsx` (CTA + badges), `home-form.stories.tsx` (controlled inputs)
-
-## Config files (do not point Vitest at the full catalog)
-
-- `vitest.config.ts` — `@storybook/addon-vitest` + Playwright browser mode
-- `.storybook-vitest/main.ts` — stories glob: `src/app/components/**/*.stories.tsx` only
-- `.storybook/main.ts` — full Storybook (catalog + app stories) for local browsing
-
-# Cursor
-
-Project Cursor config lives under `.cursor/`:
-
-- Rules: mission (`vibework`), toolchain (`viteplus`), UI stack (`ui-stack` when editing `src/`), **component stories** (`component-stories` when editing `src/app/components/`)
-- Skill: `figma-to-prototype` for Figma MCP → Astryx → pages
-- MCP: Figma at `.cursor/mcp.json` (also install `/add-plugin figma` per machine)
-- Hooks: `.cursor/hooks.json` — after Write/StrReplace under `src/app/components/`, reminds the agent to add or fix colocated stories with `test` tags and `play` functions (see `hooks/check-component-story.mjs`)
