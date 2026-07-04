@@ -1,0 +1,57 @@
+---
+description: Storybook + Vitest requirements for src/app/components
+globs: src/app/components/**/*
+alwaysApply: false
+---
+
+# Component stories + tests
+
+Hand-authored components in `src/app/components/` **must** ship with colocated `*.stories.tsx` that Vitest runs via Storybook play functions.
+
+## Commands
+
+```bash
+vp run storybook          # browse Vibework component stories
+vp test                   # Vitest browser tests — app components only
+vp check                  # format, lint, typecheck
+```
+
+First-time browser setup: `pnpm exec playwright install chromium`
+
+## Scope
+
+| Path | Storybook config | Vitest |
+| --- | --- | --- |
+| `src/app/components/**/*.stories.tsx` | `.storybook-vitest/main.ts` | Yes — `tags: ["test"]` |
+
+Vitest uses `.storybook-vitest/` so Storybook browsing stays separate from test runs.
+
+## Checklist for every new or changed component
+
+1. Colocate `my-widget.stories.tsx` next to `my-widget.tsx`
+2. Meta: `title: "Vibework/Components/MyWidget"`, `tags: ["autodocs", "test"]`
+3. Every `export const …: Story` includes a `play` function
+4. Import test utils from `storybook/test` (`expect`, `within`, `userEvent`, `fn` as needed) — not `@testing-library/*`
+5. Run `vp test` and `vp check`
+
+Copy patterns from `info-card.stories.tsx` or `hello-form.stories.tsx`.
+
+**Play guidelines**
+
+- Presentational: assert roles/text (`getByRole`, `getByText`)
+- Interactive: `userEvent` + assert outcomes
+- Callback props: `fn()` in meta `args`, `toHaveBeenCalledOnce()` in `play`
+
+## Config
+
+- `vitest.config.ts` — `@storybook/addon-vitest` + Playwright browser
+- `.storybook-vitest/main.ts` — glob: `src/app/components/**/*.stories.tsx` only
+- `.storybook/main.ts` — full Storybook for local browsing
+
+## Storybook MCP
+
+Requires Storybook running: `vp run storybook` → MCP at `http://localhost:6006/mcp` (`.cursor/mcp.json`).
+
+After story changes, run `vp test` — MCP complements but does not replace it.
+
+**Installing addons:** `pnpm add -D @storybook/addon-…` + register in `.storybook/main.ts` — not `vpx storybook add` or `npm`.

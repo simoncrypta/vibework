@@ -1,0 +1,30 @@
+---
+description: RedwoodSDK RSC + Tailwind conventions for UI work
+globs: src/**/*
+alwaysApply: false
+---
+
+# UI stack (RSC + Tailwind)
+
+## Structure
+
+- Pages: Server Components in `src/app/pages/`
+- Interactive forms / state: small `"use client"` files under `src/app/components/` (see `hello-form.tsx`)
+- Document shell: `src/app/document.tsx` — stylesheet via `?url` for RSC HTML
+- Optional providers: `src/app/providers.tsx` — add your design-system theme here
+- Styles: `src/app/styles.css` (Tailwind), linked from `Document` via `?url`
+
+## Styling
+
+- **Tailwind** for layout, spacing, and page chrome
+- Add a design system via `providers.tsx` and component imports when ready
+- Prefer utility classes over raw hex/px for prototypes
+
+## Patterns
+
+- Server page + client form: `src/app/pages/home.tsx` + `src/app/components/hello-form.tsx`
+- Presentational + interactive card: `src/app/components/info-card.tsx`
+
+## Routes
+
+Register new pages in `src/worker.tsx` with `route()` like the home page.

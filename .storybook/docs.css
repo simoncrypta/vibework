@@ -1,0 +1,13 @@
+/*
+ * Docs pages render outside the story decorator — match app page background.
+ */
+.docs-story,
+.sbdocs-preview,
+.sb-story {
+  background-color: #f8fafc !important;
+}
+
+.sbdocs.sbdocs-wrapper,
+.sbdocs-content {
+  background-color: #f8fafc;
+}

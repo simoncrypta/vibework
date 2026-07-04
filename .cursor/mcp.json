@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "figma": {
+      "url": "https://mcp.figma.com/mcp"
+    },
+    "storybook": {
+      "url": "http://localhost:6006/mcp"
+    }
+  }
+}
