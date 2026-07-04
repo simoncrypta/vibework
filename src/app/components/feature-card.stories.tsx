@@ -4,7 +4,7 @@ import { fn } from "storybook/test";
 import { FeatureCard } from "./feature-card";
 
 const meta = {
-  title: "Components/FeatureCard",
+  title: "Vibework/Components/FeatureCard",
   component: FeatureCard,
   tags: ["autodocs"],
   parameters: {

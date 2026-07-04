@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StatusPill } from "./status-pill";
 
 const meta = {
-  title: "Components/StatusPill",
+  title: "Vibework/Components/StatusPill",
   component: StatusPill,
   tags: ["autodocs"],
   parameters: {

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { HomeForm } from "./home-form";
 
 const meta = {
-  title: "Components/HomeForm",
+  title: "Vibework/Components/HomeForm",
   component: HomeForm,
   tags: ["autodocs"],
   parameters: {

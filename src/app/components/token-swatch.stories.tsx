@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TokenSwatch } from "./token-swatch";
 
 const meta = {
-  title: "Components/TokenSwatch",
+  title: "Vibework/Components/TokenSwatch",
   component: TokenSwatch,
   tags: ["autodocs"],
   parameters: {

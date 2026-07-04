@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { PageHeader } from "./page-header";
 
 const meta = {
-  title: "Components/PageHeader",
+  title: "Vibework/Components/PageHeader",
   component: PageHeader,
   tags: ["autodocs"],
   parameters: {

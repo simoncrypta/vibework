@@ -7,7 +7,11 @@ import { mergeConfig } from "vite-plus";
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  stories: [
+    "../src/storybook/**/*.mdx",
+    "../src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+  ],
   addons: ["@storybook/addon-docs", "@storybook/addon-a11y"],
   framework: {
     name: "@storybook/react-vite",
@@ -31,6 +35,14 @@ const config: StorybookConfig = {
       resolve: {
         alias: {
           "@": path.resolve(dirname, "../src"),
+          "@astryx/blocks": path.resolve(
+            dirname,
+            "../node_modules/@astryxdesign/cli/templates/blocks",
+          ),
+          "@astryx/pages": path.resolve(
+            dirname,
+            "../node_modules/@astryxdesign/cli/templates/pages",
+          ),
         },
       },
     });
