@@ -13,7 +13,26 @@ This repo is a **[GitHub public template](https://docs.github.com/en/repositorie
 | **vibework** (this repo)                                              | Core stack + Tailwind — bring your own components |
 | **[vibework-astryx](https://github.com/simoncrypta/vibework-astryx)** | Astryx design system + full Storybook catalog     |
 
-Future: variant repos will sync generic files listed in [`CORE_MANIFEST.json`](./CORE_MANIFEST.json) from tagged vibework releases.
+Variant repos sync generic files from tagged **[vibework](https://github.com/simoncrypta/vibework)** releases. See [Syncing variants](#syncing-variants) below.
+
+---
+
+## Syncing variants
+
+Generic stack files are listed in [`CORE_MANIFEST.json`](./CORE_MANIFEST.json). After tagging a vibework release, update a variant from a clone of **vibework**:
+
+```bash
+# In vibework repo — preview changes
+vp run sync:variant -- ../vibework-astryx --dry-run
+
+# Apply sync from current HEAD
+vp run sync:variant -- ../vibework-astryx
+
+# Apply sync from a tagged core release
+vp run sync:variant -- ../vibework-astryx --ref v0.1.0
+```
+
+Each variant declares DS-specific paths in `VARIANT_OWNED.json` — those files are never overwritten. After syncing, run `vp check && vp test` in the variant repo.
 
 ---
 
@@ -118,7 +137,9 @@ src/
 .storybook/               # Storybook (browse)
 .storybook-vitest/        # Vitest-only Storybook config
 .cursor/                  # Agent rules, skills, hooks, MCP
-CORE_MANIFEST.json        # Generic files (for future variant sync)
+CORE_MANIFEST.json        # Generic files synced to variants
+scripts/
+  sync-to-variant.mjs     # Copy core files into variant repos
 ```
 
 ---

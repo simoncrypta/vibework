@@ -17,6 +17,7 @@
     "types": "tsc",
     "storybook": "storybook dev -p 6006",
     "storybook-build": "storybook build",
+    "sync:variant": "node scripts/sync-to-variant.mjs",
     "prepare": "vp config"
   },
   "dependencies": {
